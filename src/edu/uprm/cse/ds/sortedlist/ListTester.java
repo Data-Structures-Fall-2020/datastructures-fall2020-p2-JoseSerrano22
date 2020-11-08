@@ -29,13 +29,14 @@ public class ListTester {
 //		printReverseList(theList);
 		System.out.println("contains: " + theList.contains("Ron"));
 		theList.clear();
-		System.out.println(theList.first());
+		System.out.println(theList.last());
 	}
 
 	private static void printList(SortedList<String> theList) {
  		for (int i=0; i < theList.size(); i++){
  			System.out.println(theList.get(i));
 		}
+
 	}
 
 //	private static void printReverseList(SortedList<String> theList) {
