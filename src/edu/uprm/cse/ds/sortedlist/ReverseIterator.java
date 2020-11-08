@@ -1,5 +1,7 @@
 package edu.uprm.cse.ds.sortedlist;
 
+import java.util.NoSuchElementException;
+
 /**
  * This interface specifies the methods for an iterator that traverses a doubly linked list in the reverse direction.
  *

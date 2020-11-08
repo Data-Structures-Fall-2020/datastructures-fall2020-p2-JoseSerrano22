@@ -1,5 +1,7 @@
 package edu.uprm.cse.ds.sortedlist;
 
+import java.util.Iterator;
+
 public class ListTester {
 
 	/**
@@ -31,7 +33,7 @@ public class ListTester {
 	}
 
 	private static void printList(SortedList<String> theList) {
-		for (String s: theList){
+ 		for (String s: theList){
 			System.out.println(s);
 		}
 	}
