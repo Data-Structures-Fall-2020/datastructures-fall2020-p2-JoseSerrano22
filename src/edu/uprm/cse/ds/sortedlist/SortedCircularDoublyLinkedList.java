@@ -38,12 +38,12 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
 
-    private Node<E> header;
+    private final Node<E> header;
     private int currentSize;
 
     public SortedCircularDoublyLinkedList(){ //constructor
         this.currentSize = 0;
-        this.header = new Node<E>();
+        this.header = new Node<>();
     }
 
 
@@ -79,16 +79,16 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
             return true;
 
         }  else {
-            Node<E> temp1;
-            Node<E> temp2 = header.getNext();
+            Node<E> temp1 = header.getNext();
+            Node<E> temp2;
 
-            for(temp1 = header.getNext().getNext(); temp1!=null; temp1 = temp1.getNext()){
-                if(temp2.getElement().compareTo(obj) <=0 && temp1.getElement().compareTo(obj) >=0){
+            for(temp2 = temp1.getNext(); temp2!=null; temp2 = temp2.getNext(), temp1 = temp1.getNext()){
+                if(temp1.getElement().compareTo(obj) <=0 && temp2.getElement().compareTo(obj) >=0){
 
-                    temp2.setNext(newNode);
-                    newNode.setPrev(temp2);
-                    newNode.setNext(temp1);
-                    temp1.setPrev(newNode);
+                    temp1.setNext(newNode);
+                    newNode.setPrev(temp1);
+                    newNode.setNext(temp2);
+                    temp2.setPrev(newNode);
 
                     this.currentSize++;
                     return true;
@@ -106,27 +106,55 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public boolean remove(E obj) {
+        if(!this.isEmpty() && firstIndex(obj)!=-1){
+            remove(firstIndex(obj));
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean remove(int index) {
-        return false;
+
+        if (index < 0 || index >= this.size()) {
+           return false;
+        } else{
+            Node<E> temp, target;
+            if(index==0){
+                temp = this.header;
+            } else{
+                temp = this.getPosition(index-1);
+            }
+            target = temp.getNext();
+            target.getNext().setPrev(temp);
+            temp.setNext(target.getNext());
+            target.setNext(null);
+            target.setPrev(null);
+            target.setElement(null);
+            this.currentSize--;
+            return true;
+        }
+
     }
 
     @Override
     public int removeAll(E obj) {
-        return 0;
+        int counter = 0;
+
+        while (this.remove(obj)) {
+            counter++;
+        }
+        return counter;
     }
 
     @Override
     public E first() {
-        return null;
+        return this.header.getNext().getElement();
     }
 
     @Override
     public E last() {
-        return null;
+        return this.header.getPrev().getElement();
     }
 
     @Override
@@ -150,7 +178,8 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
     @Override
     public boolean contains(E e) {
-        return false;
+
+        return firstIndex(e) != -1;
     }
 
     @Override
@@ -166,11 +195,14 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     @Override
     public int firstIndex(E e) {
         int index = 0;
+        Node<E> temp = this.header.getNext();
 
-        for( Node<E> temp1 = header.getNext(); temp1!=null; temp1 = temp1.getNext(), index++){
-            if (temp1.getElement().equals(e)) {
+        while ((index < this.size())) {
+            if(temp.getElement().equals(e)){
                 return index;
             }
+            temp = temp.getNext();
+            index++;
         }
 
         return -1;
@@ -181,10 +213,14 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
         int index = 0;
         int result =-1;
 
-        for( Node<E> temp1 = header.getNext(); temp1!=null; temp1 = temp1.getNext(), index++){
-            if (temp1.getElement().equals(e)) {
-                result = index;
+        Node<E> temp = this.header.getNext();
+
+        while ((index < this.size())) {
+            if(temp.getElement().equals(e)){
+                result=index;
             }
+            temp = temp.getNext();
+            index++;
         }
 
         return result;

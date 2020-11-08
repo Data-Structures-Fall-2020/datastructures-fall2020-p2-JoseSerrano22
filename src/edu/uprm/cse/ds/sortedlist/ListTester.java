@@ -1,14 +1,12 @@
 package edu.uprm.cse.ds.sortedlist;
 
-import java.util.Iterator;
-
 public class ListTester {
 
 	/**
-	 * @param args
+	 * @param args d
 	 */
 	public static void main(String[] args) {
-		SortedList<String> theList = new SortedCircularDoublyLinkedList<String>();
+		SortedList<String> theList = new SortedCircularDoublyLinkedList<>();
 		System.out.println("Empty List: " + theList.isEmpty());
 		theList.add("Bob");
 		theList.add("Ron");
@@ -22,26 +20,28 @@ public class ListTester {
 		System.out.println("Last element is Ned: " + theList.last().equals("Ned"));  // must be false
 		System.out.println("Last element is Ron: " + theList.last().equals("Ron"));
 		theList.add("Cal");
-		printReverseList(theList);
+//		printReverseList(theList);
 		System.out.println("Remove element at position 1: " + theList.remove(1));
-		printReverseList(theList);
+//		printReverseList(theList);
 		System.out.println("Remove last elements: " + theList.remove("Ron"));
 		printList(theList);
 		System.out.println();
-		printReverseList(theList);
-
+//		printReverseList(theList);
+		System.out.println("contains: " + theList.contains("Ron"));
+		theList.clear();
+		System.out.println(theList.first());
 	}
 
 	private static void printList(SortedList<String> theList) {
- 		for (String s: theList){
-			System.out.println(s);
+ 		for (int i=0; i < theList.size(); i++){
+ 			System.out.println(theList.get(i));
 		}
 	}
 
-	private static void printReverseList(SortedList<String> theList) {
-		for (ReverseIterator<String> iter = theList.reverseIterator(); iter.hasPrevious(); ){
-			System.out.println(iter.previous());
-		}
-	}
+//	private static void printReverseList(SortedList<String> theList) {
+//		for (ReverseIterator<String> iter = theList.reverseIterator(); iter.hasPrevious(); ){
+//			System.out.println(iter.previous());
+//		}
+//	}
 
 }
