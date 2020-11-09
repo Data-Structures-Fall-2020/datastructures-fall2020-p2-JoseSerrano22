@@ -1,8 +1,7 @@
 package edu.uprm.cse.ds.sortedlist;
 
-
 import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements SortedList<E> {
 
@@ -189,11 +188,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public Iterator<E> iterator(int index) {
-        return null;
-    }
-
-    @Override
     public int firstIndex(E e) {
         int index = 0;
         Node<E> temp = this.header.getNext();
@@ -227,20 +221,16 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
         return result;
     }
     @Override
-    public ReverseIterator<E> reverseIterator() {
-        return null;
-    }
+    public ReverseIterator<E> reverseIterator() { return new ReverseListIterator<>(); }
 
     @Override
-    public ReverseIterator<E> reverseIterator(int index) {
-        return null;
-    }
+    public ReverseIterator<E> reverseIterator(int index) { return new ReverseListIterator<>(index); }
 
     @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
+    public Iterator<E> iterator() { return new ListIterator<>(); }
 
+    @Override
+    public Iterator<E> iterator(int index) { return new ListIterator<>(index); }
 
     private Node<E> getPosition(int index) {
 
@@ -254,4 +244,93 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
         return temp;
     }
+
+    private class ReverseListIterator<E> implements ReverseIterator<E> {
+
+        private Node<E> newNode;
+        private int count;
+
+        //Constructor for the reverse iterator
+        public ReverseListIterator() {
+            this.newNode = (Node<E>) header;
+            this.count = 0;
+        }
+
+        //Constructor with  parameters
+        public ReverseListIterator(int index) {
+            int i = 0;
+            this.newNode = (Node<E>) header;
+            while (i < index) {
+                this.newNode = this.newNode.getPrev();
+                i++;
+            }
+            this.count = 0;
+        }
+
+        //Checks if there is a next element in the list
+        @Override
+        public boolean hasPrevious() {
+            return this.count < size();
+        }
+
+        //Gets the previous element, if is not possible,
+        //throws an NoSuchElementException
+        @Override
+        public E previous() {
+            if (this.hasPrevious()) {
+                E result = this.newNode.getPrev().getElement();
+                this.newNode = this.newNode.getPrev();
+                this.count ++;
+                return result;
+            }else {
+                throw new NoSuchElementException();
+            }
+        }
+
+    }
+
+    private class ListIterator<E> implements Iterator<E> {
+
+        private Node<E> newNode;
+
+        //Constructor for the iterator
+        public ListIterator() {
+            this.newNode = (Node<E>) header;
+        }
+
+        //Constructor with parameters
+        public ListIterator(int index) {
+            int i = 0;
+            this.newNode = (Node<E>) header;
+            while (i < index) {
+                this.newNode = this.newNode.getNext();
+                i++;
+            }
+        }
+
+
+        //Checks if there is a next element in the list
+        @Override
+        public boolean hasNext() {
+			return this.newNode.getNext() != header;
+//			System.out.println(count + "\t" + size());
+//            return count < size();
+        }
+
+        //Gets the next element, if is not possible,
+        //throws an NoSuchElementException
+        @Override
+        public E next() {
+            if (this.hasNext()) {
+                E result = this.newNode.getNext().getElement();
+                this.newNode = this.newNode.getNext();
+                return result;
+            }else {
+                throw new NoSuchElementException();
+            }
+        }
+
+    }
+
+
 }
