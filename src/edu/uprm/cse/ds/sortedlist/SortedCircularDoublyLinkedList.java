@@ -248,12 +248,10 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     private class ReverseListIterator<E> implements ReverseIterator<E> {
 
         private Node<E> newNode;
-        private int count;
 
         //Constructor for the reverse iterator
         public ReverseListIterator() {
             this.newNode = (Node<E>) header;
-            this.count = 0;
         }
 
         //Constructor with  parameters
@@ -264,13 +262,13 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
                 this.newNode = this.newNode.getPrev();
                 i++;
             }
-            this.count = 0;
+
         }
 
         //Checks if there is a next element in the list
         @Override
         public boolean hasPrevious() {
-            return this.count < size();
+            return this.newNode.getPrev() != header;
         }
 
         //Gets the previous element, if is not possible,
@@ -280,7 +278,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
             if (this.hasPrevious()) {
                 E result = this.newNode.getPrev().getElement();
                 this.newNode = this.newNode.getPrev();
-                this.count ++;
                 return result;
             }else {
                 throw new NoSuchElementException();
