@@ -56,7 +56,7 @@ public class ListTester {
 	}
 
 	private static void printReverseList(SortedList<String> theList) {
-		for (ReverseIterator<String> iter = theList.reverseIterator(); iter.hasPrevious(); ){
+		for (ReverseIterator<String> iter = theList.reverseIterator(0); iter.hasPrevious(); ){
 			System.out.println(iter.previous());
 		}
 	}
