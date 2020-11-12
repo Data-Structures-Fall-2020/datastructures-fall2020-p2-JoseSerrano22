@@ -48,10 +48,10 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 
     @Override
-    public boolean add(E obj) {
+    public boolean add(E obj) { //add element in ascending order
         Node<E> newNode = new Node<>(obj,null,null);
 
-        if(isEmpty()) {
+        if(isEmpty()) { // if empty just add
             this.header.setNext(newNode);
             newNode.setNext(header);
             this.header.setPrev(newNode);
@@ -60,7 +60,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
             this.currentSize++;
             return true;
 
-        } else if (this.header.getNext().getElement().compareTo(obj) >=0){
+        } else if (this.header.getNext().getElement().compareTo(obj) >=0){ // if the element next to header is greater than the element outside, add it next the header
             newNode.setNext(this.header.getNext());
             newNode.setPrev(this.header);
             this.header.getNext().setPrev(newNode);
@@ -69,7 +69,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
             this.currentSize++;
             return true;
 
-        } else if (this.header.getPrev().getElement().compareTo(obj) <=0){
+        } else if (this.header.getPrev().getElement().compareTo(obj) <=0){ // if the element before the header is below than the element outside, add it before the header
             newNode.setNext(this.header);
             newNode.setPrev(header.getPrev());
             this.header.getPrev().setNext(newNode);
@@ -78,7 +78,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
             this.currentSize++;
             return true;
 
-        }  else {
+        }  else { // add it between the large and low element comparing the element outside and add it
             Node<E> temp1 = header.getNext();
             Node<E> temp2;
 
@@ -105,7 +105,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public boolean remove(E obj) {
+    public boolean remove(E obj) { // remove the first object in the list if not the firstIndex() will return -1 becoming false the function
         if(!this.isEmpty() && firstIndex(obj)!=-1){
             remove(firstIndex(obj));
             return true;
@@ -114,17 +114,19 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public boolean remove(int index) {
+    public boolean remove(int index) { // remove the object on that index
 
-        if (index < 0 || index >= this.size()) {
+        if (index < 0 || index >= this.size()) { // if is bellow or greater than the size return false
            return false;
         } else{
             Node<E> temp, target;
-            if(index==0){
+            if(index==0){ //if the index is at the start the temp is the header
                 temp = this.header;
             } else{
-                temp = this.getPosition(index-1);
+                temp = this.getPosition(index-1); //if the index is not at the start get the position before the index for the temp
             }
+            // the target is the one that we want to eliminate and is the element after the temp
+            //replace the link between the temp and target and change it for temp and target.getNext
             target = temp.getNext();
             target.getNext().setPrev(temp);
             temp.setNext(target.getNext());
@@ -138,7 +140,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public int removeAll(E obj) {
+    public int removeAll(E obj) { //call the function for remove the first object until there is not more that object
         int counter = 0;
 
         while (this.remove(obj)) {
@@ -148,17 +150,17 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public E first() {
+    public E first() { // lowest element
         return this.header.getNext().getElement();
     }
 
     @Override
-    public E last() {
+    public E last() { // largest element
         return this.header.getPrev().getElement();
     }
 
     @Override
-    public E get(int index) {
+    public E get(int index) { // get the element in that index of the list
 
         if (index < 0 || index >= this.size()) {
             throw new IndexOutOfBoundsException("small or big");
@@ -170,14 +172,14 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public void clear() {
+    public void clear() { // remove the first index until the size==0
         while (!this.isEmpty()) {
             this.remove(0);
         }
     }
 
     @Override
-    public boolean contains(E e) {
+    public boolean contains(E e) { // find the first index of the list to check if the element exist
 
         return firstIndex(e) != -1;
     }
@@ -188,7 +190,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public int firstIndex(E e) {
+    public int firstIndex(E e) { // run the list until the element appear
         int index = 0;
         Node<E> temp = this.header.getNext();
 
@@ -204,7 +206,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     }
 
     @Override
-    public int lastIndex(E e) {
+    public int lastIndex(E e) { // run the list until the last element we want appear
         int index = 0;
         int result =-1;
 
@@ -232,7 +234,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
     @Override
     public Iterator<E> iterator(int index) { return new ListIterator<>(index); }
 
-    private Node<E> getPosition(int index) {
+    private Node<E> getPosition(int index) { //find the node in that position
 
         int currentPosition = 0;
         Node<E> temp = this.header.getNext();
@@ -310,8 +312,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
         @Override
         public boolean hasNext() {
 			return this.newNode.getNext() != header;
-//			System.out.println(count + "\t" + size());
-//            return count < size();
         }
 
         //Gets the next element, if is not possible,
